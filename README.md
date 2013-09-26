@@ -45,13 +45,13 @@ Simple jQuery plugin for create slides with fade effect.
 ### JavaScript
 
 ```javascript
-$('.fade-slide').fadeslie();
+$('.fade-slide').fadeslide();
 ```
 
 Default options.
 
 ```javascript
-$('.fade-slide').fadeslie({
+$('.fade-slide').fadeslide({
     fx: {
         duration: 500
     },
