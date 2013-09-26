@@ -20,7 +20,7 @@ Simple jQuery plugin for create slides with fade effect.
 </div>
 ```
 
-For preload images use a `data-src' attribute on images.
+For preload images use a `data-src` attribute on images.
 
 ```html
 <div class="fade-slide">
