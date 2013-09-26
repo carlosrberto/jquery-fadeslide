@@ -48,7 +48,7 @@
         },
 
         removeItem: function( item ) {
-            this.images.splice(this.images.indexOf(item), 1);
+            this.images.splice($.inArray(item, this.images), 1);
         },
 
         preloadImages: function(complete) {
@@ -87,7 +87,7 @@
                 prevButton = $(this.options.prevButton),
                 loader = $(this.options.loader);
 
-            if ( this.options.auto && this.totalItems.length > 1 ) {
+            if ( this.options.auto && this.totalItems > 1 ) {
                 this.auto();
             }
 
