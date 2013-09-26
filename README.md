@@ -58,9 +58,9 @@ $('.fade-slide').fadeslide({
     nextButton: '.fadeslide-next',
     prevButton: '.fadeslide-prev',
     loader: '.fadeslide-loader',
-    duration: 2000,
+    duration: 5000,
     itemsSelector: '.fadeslide-list li',
     index: 0,
-    auto: false
+    auto: true
 });
 ```
