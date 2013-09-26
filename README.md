@@ -7,7 +7,7 @@ Simple jQuery plugin for create slides with fade effect.
 ### Markup
 
 ```html
-<div class="fade-slide">
+<div class="fadeslide">
     <ul class="fadeslide-list">
         <li><a href=""><img src="image.jpg" alt=""></a></li>
         <li><a href=""><img src="image.jpg" alt=""></a></li>
@@ -23,7 +23,7 @@ Simple jQuery plugin for create slides with fade effect.
 For preload images use a `data-src` attribute on images.
 
 ```html
-<div class="fade-slide">
+<div class="fadeslide">
     <ul class="fadeslide-list">
         <li><a href=""><img data-src="image.jpg" alt=""></a></li>
         <li><a href=""><img data-src="image.jpg" alt=""></a></li>
@@ -38,7 +38,7 @@ For preload images use a `data-src` attribute on images.
 
 ### Basic CSS
 ```css
-.fade-slide{
+.fadeslide{
     width: 960px;
     height: 600px;
     position: relative;
@@ -63,13 +63,13 @@ For preload images use a `data-src` attribute on images.
 ### JavaScript
 
 ```javascript
-$('.fade-slide').fadeslide();
+$('.fadeslide').fadeslide();
 ```
 
 Default options.
 
 ```javascript
-$('.fade-slide').fadeslide({
+$('.fadeslide').fadeslide({
     fx: {
         duration: 500
     },
