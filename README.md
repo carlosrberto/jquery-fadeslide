@@ -75,6 +75,10 @@ $('.fadeslide').fadeslide({
     },
     nextButton: '.fadeslide-next',
     prevButton: '.fadeslide-prev',
+    paginationEl: '.fadeslide-pagination',
+    paginationItem: function(index) {
+        return '<li>'+ index +'</li>';
+    },
     loader: '.fadeslide-loader',
     duration: 5000,
     itemsSelector: '.fadeslide-list li',
