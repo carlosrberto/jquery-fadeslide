@@ -8,7 +8,7 @@
 * Licensed under a Creative Commons Attribution 3.0 License
 * http://creativecommons.org/licenses/by-sa/3.0/
 *
-* Version: 0.1
+* Version: 0.2
 */
 
 (function() {
@@ -18,6 +18,10 @@
         },
         nextButton: '.fadeslide-next',
         prevButton: '.fadeslide-prev',
+        paginationEl: '.fadeslide-pagination',
+        paginationItem: function(index) {
+            return '<li>'+ index +'</li>';
+        },
         loader: '.fadeslide-loader',
         duration: 5000,
         itemsSelector: '.fadeslide-list li',
@@ -76,6 +80,7 @@
         this.timerId = null;
         this.animating = false;
         this._setInitial();
+        this._renderPagination();
         this._initEvens();
     };
 
@@ -83,9 +88,10 @@
 
         _initEvens: function() {
             var that = this,
-                nextButton = $(this.options.nextButton),
-                prevButton = $(this.options.prevButton),
-                loader = $(this.options.loader);
+                nextButton = this.el.find(this.options.nextButton),
+                prevButton = this.el.find(this.options.prevButton),
+                loader = this.el.find(this.options.loader),
+                paginationEl = this.el.find(this.options.paginationEl);
 
             if ( this.options.auto && this.totalItems > 1 ) {
                 this.auto();
@@ -111,6 +117,18 @@
                 });
                 that.el.on('afterload.fadeslide', function(){
                     loader.fadeOut();
+                });
+            }
+
+            if ( paginationEl.length ) {
+                paginationEl.on('click', '> *', $.proxy(function( event ) {
+                    var el = $(event.currentTarget);
+                    this.showSlide(el.index());
+                }, this));
+
+                this.el.on('change.fadeslide', function(event, inSlide, el, index) {
+                    paginationEl.find('> *').removeClass('active');
+                    paginationEl.find('> *').eq(index).addClass('active');
                 });
             }
 
@@ -150,11 +168,28 @@
             return dfd.promise();
         },
 
+        _renderPagination: function() {
+            var i = 0, paginationEl = this.el.find(this.options.paginationEl);
+            if ( paginationEl.length ) {
+                for(; i< this.totalItems; i++) {
+                    paginationEl.append(this.options.paginationItem(i+1));
+                }
+            }
+        },
+
         showSlide: function(index) {
             var that = this,
                 s,
                 inSlide = this.items.eq(index),
                 outSlide = this.items.eq(this.index);
+
+            if ( this.animating ) {
+                return;
+            }
+
+            if ( this.options.auto ) {
+                this.stop();
+            }
 
             this.animating = true;
             that.el.trigger('beforechange.fadeslide');
@@ -163,6 +198,9 @@
             s.done(function(){
                 this.animating = false;
                 that.el.trigger('change.fadeslide', [inSlide, that.el, index, that]);
+                if ( this.options.auto ) {
+                    that.auto();
+                }
             });
             return s;
         },
@@ -190,33 +228,13 @@
         },
 
         next: function() {
-            if ( this.animating ) {
-                return;
-            }
             var that = this, next = this.index  + 1 < this.totalItems ? this.index  + 1 : 0;
-            if (!this.options.auto) {
-                return this.showSlide(next);
-            } else {
-                this.stop();
-                return this.showSlide(next).done(function(){
-                    that.auto();
-                });
-            }
+            return this.showSlide(next);
         },
 
         prev: function() {
-            if ( this.animating ) {
-                return;
-            }
             var that = this, prev = this.index  - 1 >= 0 ? this.index  - 1 : this.totalItems - 1;
-            if (!this.options.auto) {
-                return this.showSlide(prev);
-            } else {
-                this.stop();
-                return this.showSlide(prev).done(function(){
-                    that.auto();
-                });
-            }
+            return this.showSlide(prev);
         }
     };
 
