@@ -8,7 +8,7 @@
 * Licensed under a Creative Commons Attribution 3.0 License
 * http://creativecommons.org/licenses/by-sa/3.0/
 *
-* Version: 0.2
+* Version: 0.2.1
 */
 
 (function() {
@@ -93,9 +93,7 @@
                 loader = this.el.find(this.options.loader),
                 paginationEl = this.el.find(this.options.paginationEl);
 
-            if ( this.options.auto && this.totalItems > 1 ) {
-                this.auto();
-            }
+            this.auto();
 
             if ( nextButton.length ) {
                 nextButton.on('click', function( event ){
@@ -170,10 +168,12 @@
 
         _renderPagination: function() {
             var i = 0, paginationEl = this.el.find(this.options.paginationEl);
-            if ( paginationEl.length ) {
+            if ( paginationEl.length && this.totalItems > 1 ) {
                 for(; i< this.totalItems; i++) {
                     paginationEl.append(this.options.paginationItem(i+1));
                 }
+            } else {
+                paginationEl.hide();
             }
         },
 
@@ -198,9 +198,7 @@
             s.done(function(){
                 this.animating = false;
                 that.el.trigger('change.fadeslide', [inSlide, that.el, index, that]);
-                if ( this.options.auto ) {
-                    that.auto();
-                }
+                that.auto();
             });
             return s;
         },
@@ -211,6 +209,11 @@
 
         auto: function() {
             var that = this;
+            console.log(this.totalItems <= 1 || !this.options.auto);
+            if (this.totalItems <= 1 || !this.options.auto) {
+                return;
+            }
+
             this.autoPlay = true;
             this.timerId = setTimeout(function(){
                 that.next().done(function(){
